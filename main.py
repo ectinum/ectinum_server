@@ -69,15 +69,7 @@ import google.cloud.firestore_v1.base_document as dcmnt
 
 
 app = FastAPI(title='Inspect234 Server')
-db = firestore.client()
-def creditDebitFunction(toCredit:bool,amount,uid):
-    userdb=DatabaseHandler(collectionName='users')
-    userDetail=userdb.getDocContent(uid)
-    if toCredit:
-        userdb.updateDoc(update_data= {'amount':userDetail["amount"]+(float(amount)/100)},doc_id=uid)
-
-    else:
-        userdb.updateDoc(update_data= {'amount':userDetail["amount"]-(float(amount)/100)},doc_id=uid)
+# db = firestore.client()
 
 
 
@@ -88,80 +80,80 @@ def creditDebitFunction(toCredit:bool,amount,uid):
 
 
 
-class DatabaseHandler:
+# class DatabaseHandler:
     
-    def __init__(self,collectionName:any,collectionRef:Optional[any]=None):
-        # document id will be user email for the user collections.
-        # self.ref = db.reference('docPath')
-        if collectionRef:
-            self.collection_ref=collectionRef
-        else:
-            self.collection_ref = db.collection(collectionName)
+#     def __init__(self,collectionName:any,collectionRef:Optional[any]=None):
+#         # document id will be user email for the user collections.
+#         # self.ref = db.reference('docPath')
+#         if collectionRef:
+#             self.collection_ref=collectionRef
+#         else:
+#             self.collection_ref = db.collection(collectionName)
         
         
         
-        # db.collections.
-        # ref.
-    def createDoc(self,new_data:dict,doc_unique_name:str):        
-        '''fresh from the pot'''
-        doc_ref=self.collection_ref.document(doc_unique_name)
+#         # db.collections.
+#         # ref.
+#     def createDoc(self,new_data:dict,doc_unique_name:str):        
+#         '''fresh from the pot'''
+#         doc_ref=self.collection_ref.document(doc_unique_name)
         
-        doc_ref.set(new_data)
-    def getDocList(self,filterDetail:list=[],orderDetail:list=[],limit: Optional[int] = None):
-        # for the filterDetail param it is a list of list which should have the field 
-        # the comparing sig
-        query=self.collection_ref
-        if len(filterDetail)!=0:
-            for i in filterDetail:
-                query=query.where(filter=FieldFilter(str(i[0],i[1],i[2])))
+#         doc_ref.set(new_data)
+#     def getDocList(self,filterDetail:list=[],orderDetail:list=[],limit: Optional[int] = None):
+#         # for the filterDetail param it is a list of list which should have the field 
+#         # the comparing sig
+#         query=self.collection_ref
+#         if len(filterDetail)!=0:
+#             for i in filterDetail:
+#                 query=query.where(filter=FieldFilter(str(i[0],i[1],i[2])))
                 
             
-        if len(orderDetail)!=0:
-            descendOrAscend=None
-            if orderDetail[1]=='ascending':
-                descendOrAscend =queriableFirestore.Query.DESCENDING
-            else:
-                descendOrAscend =queriableFirestore.Query.ASCENDING
+#         if len(orderDetail)!=0:
+#             descendOrAscend=None
+#             if orderDetail[1]=='ascending':
+#                 descendOrAscend =queriableFirestore.Query.DESCENDING
+#             else:
+#                 descendOrAscend =queriableFirestore.Query.ASCENDING
             
-            query=query.order_by("name", direction=descendOrAscend)
+#             query=query.order_by("name", direction=descendOrAscend)
             
    
     
-        if limit:
-            query.limit(limit)
+#         if limit:
+#             query.limit(limit)
         
-        docs = (
-            query
-            .stream()
-        )
-        result:list =[]
+#         docs = (
+#             query
+#             .stream()
+#         )
+#         result:list =[]
 
-        for doc in docs:
-            print(f"{doc.id} => {doc.to_dict()}")
-            result.append(doc.to_dict())
+#         for doc in docs:
+#             print(f"{doc.id} => {doc.to_dict()}")
+#             result.append(doc.to_dict())
                 
-        return result
-    def getDocContent(self,doc_id:str):
-        # Note: Use of CollectionRef stream() is prefered to get()
-        doc_ref = self.collection_ref.document(doc_id)
+#         return result
+#     def getDocContent(self,doc_id:str):
+#         # Note: Use of CollectionRef stream() is prefered to get()
+#         doc_ref = self.collection_ref.document(doc_id)
 
-        doc = doc_ref.get()
-        result:dict={}
-        if doc.exists:
-            result=doc.to_dict()
+#         doc = doc_ref.get()
+#         result:dict={}
+#         if doc.exists:
+#             result=doc.to_dict()
         
             
 
-        return result
+#         return result
     
-    def updateDoc(self,update_data:dict,doc_id:str):
+#     def updateDoc(self,update_data:dict,doc_id:str):
         
-        doc_ref=self.collection_ref.document(doc_id)
-        doc_ref.update(update_data)
+#         doc_ref=self.collection_ref.document(doc_id)
+#         doc_ref.update(update_data)
 
-    def deleteDoc(self,new_data:dict,document_id:str):
-        doc_ref = self.collection_ref.document(document_id)
-        doc_ref.delete()
+#     def deleteDoc(self,new_data:dict,document_id:str):
+#         doc_ref = self.collection_ref.document(document_id)
+#         doc_ref.delete()
 
 
 @app.post("/sendEmail")
