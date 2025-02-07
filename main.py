@@ -7,10 +7,12 @@ from datetime import datetime
 from typing import Annotated, Any, Optional
 
 from fastapi import FastAPI, File, Request, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 
 
 
-import firebase_admin.auth
+
+from fastapi.responses import JSONResponse
 import firebase_admin.storage
 from firebase_admin import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
@@ -68,12 +70,19 @@ import google.cloud.firestore_v1.base_document as dcmnt
 
 
 
-app = FastAPI(title='Inspect234 Server')
+app = FastAPI(title='Ectinum Server')
 # db = firestore.client()
 
 
 
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    # origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 
@@ -157,32 +166,48 @@ app = FastAPI(title='Inspect234 Server')
 
 
 @app.post("/sendEmail")
-# async def sendPushNotification(data:sendPushNotificationSchema):
 async def sendEmail(data:sendEmailSchema):
-    port = 465  # For SSL
-    smtp_server = "smtp.gmail.com"
-    sender_email = "danoritic@gmail.com"
-    # data.email
-    # "my@gmail.com"  # Enter your address
-    receiver_email = "info@ectinum.com"  # Enter receiver address
-    password = "dxnh vjod jdbj vwej"
-    # input("Type your password and press enter: ")
-    message = data.message
-    # """\
-    # Subject: Hi there
+    if True:
+        port = 465  # For SSL
+        smtp_server = "smtp.gmail.com"
+        sender_email = "danoritic@gmail.com"
+        
+        receiver_email = "info@ectinum.com"  # Enter receiver address
+        password = "dxnh vjod jdbj vwej"
+        # input("Type your password and press enter: ")
+        message = data.message
+        # """\
+        # Subject: Hi there
 
-    # This message is sent from Python."""
+        # This message is sent from Python."""
 
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, message)
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, message)
+        return JSONResponse(content={
+        "status": True,
+        "data":
+        None,
+        "message": "Message sent successfully"},status_code=200)
+    try:
+        pass
+    except:
+        return JSONResponse(content={
+        "status": False,
+        "data":
+        None,
+        "message": "Message not sent"},status_code=400)
+
+
+# @app.get("/sendEmail")
+
 
 
 
 @app.get("/")
 async def do():
-    return "inspect"
+    return "ectinum"
 
 
 def validate_token(request:Request):
