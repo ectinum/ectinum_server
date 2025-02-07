@@ -1,0 +1,12 @@
+fastapi
+firebase_admin
+paystackapi
+protobuf
+pydantic
+Pyrebase
+Pyrebase4
+Requests
+timestring
+urllib3
+uvicorn
+setuptools
