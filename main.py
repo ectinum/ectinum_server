@@ -170,10 +170,10 @@ async def sendEmail(data:sendEmailSchema):
     if True:
         port = 465  # For SSL
         smtp_server = "smtp.gmail.com"
-        sender_email = "danoritic@gmail.com"
+        sender_email = "ectinum@gmail.com"
         
         receiver_email = "info@ectinum.com"  # Enter receiver address
-        password = "dxnh vjod jdbj vwej"
+        password = "kndl ghpf ybkv arzl"
         # input("Type your password and press enter: ")
         message = data.message
         # """\
